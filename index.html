@@ -5,8 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Math Calculator</title>
 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css"
+      integrity="sha512-9xKTRVabjVeZmc+GUW8GgSmcREDunMM+Dt/GrzchfN8tkwHizc5RP4Ok/MXFFy5rIjJjzhndFScTceq5e6GvVQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="styles.css" />
     <script src="./app.js" defer></script>
   </head>
-  <body></body>
+  <body>
+    <div class="calculator-container">
+      <div class="calculator-display">
+        <span>0</span>
+      </div>
+
+      <div class="calculator-grid">
+        <div class="calc-item light-gray" id="ac"><span>AC</span></div>
+        <div class="calc-item light-gray" id="sign"><span>+/-</span></div>
+        <div class="calc-item light-gray" id="modulo"><span>%</span></div>
+        <div class="calc-item orange" id="divide">
+          <i class="fa-solid fa-divide"></i>
+        </div>
+        <div class="calc-item" id="seven"><span>7</span></div>
+        <div class="calc-item" id="eight"><span>8</span></div>
+        <div class="calc-item" id="nine"><span>9</span></div>
+        <div class="calc-item orange" id="multiply">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+        <div class="calc-item" id="four"><span>4</span></div>
+        <div class="calc-item" id="five"><span>5</span></div>
+        <div class="calc-item" id="six"><span>6</span></div>
+        <div class="calc-item orange" id="subtract"><span>-</span></div>
+        <div class="calc-item" id="one"><span>1</span></div>
+        <div class="calc-item" id="two"><span>2</span></div>
+        <div class="calc-item" id="three"><span>3</span></div>
+        <div class="calc-item orange" id="add"><span>+</span></div>
+        <div class="calc-item" id="zero"><span>0</span></div>
+        <div class="calc-item" id="dot"><span>.</span></div>
+        <div class="calc-item orange" id="equlas"><span> = </span></div>
+      </div>
+    </div>
+  </body>
 </html>
