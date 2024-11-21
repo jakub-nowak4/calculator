@@ -1,3 +1,5 @@
+import { parseToPostFix, calculatePostfix } from "./parseMathExpression.js";
+
 let input = "0";
 
 const calcDisplay = document.querySelector(".calculator-display span");
@@ -81,12 +83,6 @@ calcItems.forEach((item) => {
 
       input += content;
 
-      if (input.length > 1) {
-        ac.firstChild.textContent = "C";
-      } else {
-        ac.firstChild.textContent = "AC";
-      }
-
       calcDisplay.textContent = input;
     });
   }
@@ -101,18 +97,25 @@ signBtn.addEventListener("click", () => {
 
 const equalsBtn = document.querySelector("#equals");
 equalsBtn.addEventListener("click", () => {
-  if (nonNumberValues.includes(input.at(-1))) return;
+  if (nonNumberValues.includes(input.at(-1)) && input.at(-1) !== ")") return;
+  else {
+    let result = 0;
+    try {
+      const parsedInput = parseToPostFix(input);
+      result = calculatePostfix(parsedInput);
+      calcDisplay.textContent = result;
+      input = "" + result;
+    } catch (error) {
+      calcDisplay.textContent = "Error";
+      input = "0";
+      setTimeout(() => {
+        calcDisplay.textContent = input;
+      }, 2000); // Clear error message after 2 seconds
+    }
+  }
 });
 
 ac.addEventListener("click", () => {
-  if (input.length > 1) {
-    input = input.slice(0, -1);
-  } else {
-    input = "0";
-  }
-
+  input = "0";
   calcDisplay.textContent = input;
 });
-
-const temp = parseStringInput("2+(-2)");
-console.log(calculatePostfix(temp));

@@ -131,6 +131,7 @@ function calculatePostfix(postfixArr) {
           }
           break;
         case "%":
+          if (b == 0) throw new Error("Division by 0!");
           stack.unshift(a % b);
           break;
         default:
@@ -143,7 +144,14 @@ function calculatePostfix(postfixArr) {
     throw new Error("Invalid postfix expression");
   }
 
-  return stack[0];
+  let result = stack[0];
+
+  // Round the result to two decimal places if it has a decimal fraction
+  if (result % 1 !== 0) {
+    result = parseFloat(result.toFixed(2));
+  }
+
+  return result;
 }
 
 //Replace - to ! while unary operator
@@ -174,5 +182,3 @@ function parseToUnary(input) {
 }
 
 export { parseToPostFix, calculatePostfix, parseToUnary };
-
-console.log(parseToPostFix("100%3*2"));
