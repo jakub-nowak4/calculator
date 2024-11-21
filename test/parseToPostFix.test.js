@@ -1,4 +1,4 @@
-import { parseToPostFix } from "../parseMathExpression";
+import { parseToPostFix } from "../src/scripts/parseMathExpression";
 
 describe("Parsing math expression to postfix notation", () => {
   test("-2", () => {
