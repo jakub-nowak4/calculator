@@ -44,7 +44,20 @@ const calcDisplay = document.querySelector(".calculator-display span");
 
 const calcItems = document.querySelectorAll(".calc-item");
 
-const nonNumberValues = ["AC", "*", "/", "+", "-", "+/-", "%", "=", "."];
+const nonNumberValues = [
+  "AC",
+  "*",
+  "/",
+  "+",
+  "-",
+  "+/-",
+  "%",
+  "=",
+  ".",
+  "(",
+  ")",
+  "!",
+];
 const operators = ["*", "/", "+", "-", "%"];
 
 function findNearestOperator(input) {
@@ -78,7 +91,11 @@ calcItems.forEach((item) => {
   if (content !== "AC" && content !== "=" && content !== "+/-") {
     item.addEventListener("click", () => {
       // Add 0 if first given input is operator
-      if (input === "0" && nonNumberValues.includes(content)) {
+      if (
+        input === "0" &&
+        nonNumberValues.includes(content) &&
+        content != "-"
+      ) {
         input = "0";
       } else if (input === "0") {
         input = "";
@@ -124,11 +141,7 @@ signBtn.addEventListener("click", () => {
 
 const equalsBtn = document.querySelector("#equals");
 equalsBtn.addEventListener("click", () => {
-  if (nonNumberValues.includes(input.at(-1))) {
-    return;
-  }
-
-  calcDisplay.textContent = input;
+  if (nonNumberValues.includes(input.at(-1))) return;
 });
 
 ac.addEventListener("click", () => {
@@ -140,3 +153,6 @@ ac.addEventListener("click", () => {
 
   calcDisplay.textContent = input;
 });
+
+const temp = parseStringInput("2+(-2)");
+console.log(calculatePostfix(temp));
