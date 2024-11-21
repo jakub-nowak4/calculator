@@ -3,11 +3,12 @@ const operatorPrecedence = {
   ")": 3,
   "*": 2,
   "/": 2,
+  "%": 2,
   "+": 1,
   "-": 1,
 };
 
-const nonNumberValues = ["+", "-", "*", "/", "(", ")", "!"];
+const nonNumberValues = ["+", "-", "*", "/", "(", ")", "!", "%"];
 
 function parseToPostFix(input) {
   const stack = [];
@@ -34,7 +35,6 @@ function parseToPostFix(input) {
         let j = i + 1;
 
         for (j; j < input.length; j++) {
-          console.log(input[j]);
           if (input[j] !== "!" && nonNumberValues.includes(input[j])) break;
         }
 
@@ -81,6 +81,4 @@ function parseToPostFix(input) {
   return arrResult;
 }
 
-function evaluatePostfix(postArr) {}
-
-console.log(parseToPostFix("!2+(!2)+45"));
+export { parseToPostFix };
