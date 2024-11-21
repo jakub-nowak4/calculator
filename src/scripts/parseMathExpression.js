@@ -1,3 +1,20 @@
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  if (b === 0) throw new Error("Division by 0!");
+  return a / b;
+}
+
 const operatorPrecedence = {
   "(": 3,
   ")": 3,
@@ -11,6 +28,7 @@ const operatorPrecedence = {
 const nonNumberValues = ["+", "-", "*", "/", "(", ")", "!", "%"];
 
 function parseToPostFix(input) {
+  input = parseToUnary(input);
   const stack = [];
   const arrResult = [];
 
@@ -81,4 +99,80 @@ function parseToPostFix(input) {
   return arrResult;
 }
 
-export { parseToPostFix };
+function calculatePostfix(postfixArr) {
+  const stack = [];
+
+  let a = null;
+  let b = null;
+
+  for (const item of postfixArr) {
+    if (typeof item === "number") {
+      stack.unshift(item);
+    } else {
+      b = stack.shift();
+      a = stack.shift();
+
+      switch (item) {
+        case "+":
+          stack.unshift(add(a, b));
+          break;
+        case "-":
+          stack.unshift(subtract(a, b));
+          break;
+        case "*":
+          stack.unshift(multiply(a, b));
+          break;
+        case "/":
+          try {
+            const result = divide(a, b);
+            stack.unshift(result);
+          } catch (error) {
+            throw error;
+          }
+          break;
+        case "%":
+          stack.unshift(a % b);
+          break;
+        default:
+          throw new Error("Syntax error!");
+      }
+    }
+  }
+
+  if (stack.length !== 1) {
+    throw new Error("Invalid postfix expression");
+  }
+
+  return stack[0];
+}
+
+//Replace - to ! while unary operator
+
+function replaceAt(text, index, replacement) {
+  return (
+    text.substring(0, index) +
+    replacement +
+    text.substring(index + replacement.length)
+  );
+}
+
+function parseToUnary(input) {
+  let tempStr = input;
+  for (let i = 0; i < tempStr.length; i++) {
+    const char = tempStr[i];
+
+    if (
+      (char === "-" && i === 0 && !nonNumberValues.includes(tempStr[i + 1])) ||
+      (char === "(" && tempStr[i + 1] === "-")
+    ) {
+      const unaryOperatorIndex = tempStr.slice(i).indexOf("-") + i;
+
+      tempStr = replaceAt(tempStr, unaryOperatorIndex, "!");
+    }
+  }
+  return tempStr;
+}
+
+export { parseToPostFix, calculatePostfix, parseToUnary };
+
+console.log(parseToPostFix("100%3*2"));

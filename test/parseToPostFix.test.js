@@ -1,16 +1,19 @@
-import { parseToPostFix } from "../src/scripts/parseMathExpression";
+import {
+  parseToPostFix,
+  parseToUnary,
+} from "../src/scripts/parseMathExpression";
 
 describe("Parsing math expression to postfix notation", () => {
   test("-2", () => {
-    expect(parseToPostFix("!2")).toEqual([-2]);
+    expect(parseToPostFix("-2")).toEqual([-2]);
   });
 
   test("-2+3", () => {
-    expect(parseToPostFix("!2+3")).toEqual([-2, 3, "+"]);
+    expect(parseToPostFix("-2+3")).toEqual([-2, 3, "+"]);
   });
 
   test("4 + (-5) * 6", () => {
-    expect(parseToPostFix("4+(!5)*6")).toEqual([4, -5, 6, "*", "+"]);
+    expect(parseToPostFix("4+(-5)*6")).toEqual([4, -5, 6, "*", "+"]);
   });
 
   test("2 + 3", () => {
@@ -26,19 +29,19 @@ describe("Parsing math expression to postfix notation", () => {
   });
 
   test("(-3) + 4", () => {
-    expect(parseToPostFix("(!3)+4")).toEqual([-3, 4, "+"]);
+    expect(parseToPostFix("(-3)+4")).toEqual([-3, 4, "+"]);
   });
 
   test("(-3) * (-4)", () => {
-    expect(parseToPostFix("(!3)*(!4)")).toEqual([-3, -4, "*"]);
+    expect(parseToPostFix("(-3)*(-4)")).toEqual([-3, -4, "*"]);
   });
 
   test("(-3) + (-4) * 2", () => {
-    expect(parseToPostFix("(!3)+(!4)*2")).toEqual([-3, -4, 2, "*", "+"]);
+    expect(parseToPostFix("(-3)+(-4)*2")).toEqual([-3, -4, 2, "*", "+"]);
   });
 
   test("(-3) + 4 * (-2)", () => {
-    expect(parseToPostFix("(!3)+4*(!2)")).toEqual([-3, 4, -2, "*", "+"]);
+    expect(parseToPostFix("(-3)+4*(-2)")).toEqual([-3, 4, -2, "*", "+"]);
   });
 
   // Tests with floating-point numbers
@@ -67,15 +70,15 @@ describe("Parsing math expression to postfix notation", () => {
   });
 
   test("(-3.5) + 4.2", () => {
-    expect(parseToPostFix("(!3.5)+4.2")).toEqual([-3.5, 4.2, "+"]);
+    expect(parseToPostFix("(-3.5)+4.2")).toEqual([-3.5, 4.2, "+"]);
   });
 
   test("(-3.5) * (-4.2)", () => {
-    expect(parseToPostFix("(!3.5)*(!4.2)")).toEqual([-3.5, -4.2, "*"]);
+    expect(parseToPostFix("(-3.5)*(-4.2)")).toEqual([-3.5, -4.2, "*"]);
   });
 
   test("(-3.5) + (-4.2) * 2.1", () => {
-    expect(parseToPostFix("(!3.5)+(!4.2)*2.1")).toEqual([
+    expect(parseToPostFix("(-3.5)+(-4.2)*2.1")).toEqual([
       -3.5,
       -4.2,
       2.1,
@@ -85,7 +88,7 @@ describe("Parsing math expression to postfix notation", () => {
   });
 
   test("(-3.5) + 4.2 * (-2.1)", () => {
-    expect(parseToPostFix("(!3.5)+4.2*(!2.1)")).toEqual([
+    expect(parseToPostFix("(-3.5)+4.2*(-2.1)")).toEqual([
       -3.5,
       4.2,
       -2.1,
@@ -112,18 +115,28 @@ describe("Parsing math expression to postfix notation", () => {
   });
 
   test("(-10) % 3", () => {
-    expect(parseToPostFix("(!10)%3")).toEqual([-10, 3, "%"]);
+    expect(parseToPostFix("(-10)%3")).toEqual([-10, 3, "%"]);
   });
 
   test("(-10) % (-3)", () => {
-    expect(parseToPostFix("(!10)%(!3)")).toEqual([-10, -3, "%"]);
+    expect(parseToPostFix("(-10)%(-3)")).toEqual([-10, -3, "%"]);
   });
 
   test("10 % (-3)", () => {
-    expect(parseToPostFix("10%(!3)")).toEqual([10, -3, "%"]);
+    expect(parseToPostFix("10%(-3)")).toEqual([10, -3, "%"]);
   });
 
   test("(-10) % 3 + 5", () => {
-    expect(parseToPostFix("(!10)%3+5")).toEqual([-10, 3, "%", 5, "+"]);
+    expect(parseToPostFix(parseToUnary("(-10)%3+5"))).toEqual([
+      -10,
+      3,
+      "%",
+      5,
+      "+",
+    ]);
+  });
+
+  test("50 % 7 + 2", () => {
+    expect(parseToPostFix("50%7+2")).toEqual([50, 7, "%", 2, "+"]);
   });
 });
